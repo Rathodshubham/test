@@ -24,3 +24,6 @@ responce coede should be as per rest guidlines
 //implement of get courier_details by given implement of add courier_type
 //error handling
 //service repository and entity layers
+
+
+kuch implement krna hotoh bata alag se
