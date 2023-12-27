@@ -1,1 +1,49 @@
 daal na
+
+Project Structure:
+
+Create a Spring Boot project with the necessary dependencies (Spring Web, Spring Data JPA, H2 Database for simplicity).
+Use appropriate package names for your classes.
+Courier Entity:
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+
+@Entity
+public class Courier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long courierId;
+
+    @NotBlank
+    private String customerName;
+
+    @NotBlank
+    private String sourceCity;
+
+    @NotBlank
+    private String destinationCity;
+
+    @NotNull
+    private CourierType courierType;
+
+    @NotBlank
+    private String mobileNumber;
+
+    @NotNull
+    private LocalDate courierDate;
+
+    // Constructors, getters, setters
+}
+
+CourierType Enum:
+public enum CourierType {
+    INTERNATIONAL_COURIER,
+    INTER_CITY_COURIER,
+    CORPORATE_COURIER
+}
+
