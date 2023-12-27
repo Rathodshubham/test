@@ -47,3 +47,21 @@ public enum CourierType {
     CORPORATE_COURIER
 }
 
+CourierRepository:
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface CourierRepository extends JpaRepository<Courier, Long> {
+    List<Courier> findByCourierType(CourierType courierType);
+}
+
+CourierService:
+import java.util.List;
+
+public interface CourierService {
+    Courier addCourier(Courier courier);
+    void deleteCourier(Long courierId);
+    List<Courier> getAllCouriersByCourierType(CourierType courierType);
+}
+
+
