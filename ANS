@@ -65,3 +65,255 @@ public interface CourierService {
 }
 
 
+CourierServiceImpl:
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CourierServiceImpl implements CourierService {
+
+    @Autowired
+    private CourierRepository courierRepository;
+
+    @Override
+    public Courier addCourier(Courier courier) {
+        // Implement validation logic (for simplicity, you can use javax.validation annotations in the Courier entity)
+        // Save courier using courierRepository
+        return courierRepository.save(courier);
+    }
+
+    @Override
+    public void deleteCourier(Long courierId) {
+        // Implement logic to delete courier by ID
+        Optional<Courier> optionalCourier = courierRepository.findById(courierId);
+        if (optionalCourier.isPresent()) {
+            courierRepository.deleteById(courierId);
+        } else {
+            throw new RuntimeException("Courier not found with ID: " + courierId);
+        }
+    }
+
+    @Override
+    public List<Courier> getAllCouriersByCourierType(CourierType courierType) {
+        // Implement logic to retrieve couriers by type
+        return courierRepository.findByCourierType(courierType);
+    }
+}
+
+CourierController:
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/couriers")
+public class CourierController {
+
+    @Autowired
+    private CourierService courierService;
+
+    @PostMapping
+    public ResponseEntity<Courier> addCourier(@RequestBody Courier courier) {
+        // Implement payload validation
+        Courier addedCourier = courierService.addCourier(courier);
+        return ResponseEntity.ok(addedCourier);
+    }
+
+    @DeleteMapping("/{courierId}")
+    public ResponseEntity<Void> deleteCourier(@PathVariable Long courierId) {
+        // Implement error handling
+        courierService.deleteCourier(courierId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/byType/{courierType}")
+    public ResponseEntity<List<Courier>> getCouriersByType(@PathVariable CourierType courierType) {
+        List<Courier> couriers = courierService.getAllCouriersByCourierType(courierType);
+        return ResponseEntity.ok(couriers);
+    }
+}
+
+Application Properties (application.properties):
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+
+
+Certainly! Below is the complete code for the Spring Boot application with the specified functionalities. I've included the main application class, entity class, repository interface, service interface, service implementation class, controller class, and application properties.
+
+Courier Entity:
+
+java
+Copy code
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+
+@Entity
+public class Courier {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long courierId;
+
+    @NotBlank
+    private String customerName;
+
+    @NotBlank
+    private String sourceCity;
+
+    @NotBlank
+    private String destinationCity;
+
+    @NotNull
+    private CourierType courierType;
+
+    @NotBlank
+    private String mobileNumber;
+
+    @NotNull
+    private LocalDate courierDate;
+
+    // Constructors, getters, setters
+}
+CourierType Enum:
+
+java
+Copy code
+public enum CourierType {
+    INTERNATIONAL_COURIER,
+    INTER_CITY_COURIER,
+    CORPORATE_COURIER
+}
+CourierRepository:
+
+java
+Copy code
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface CourierRepository extends JpaRepository<Courier, Long> {
+    List<Courier> findByCourierType(CourierType courierType);
+}
+CourierService:
+
+java
+Copy code
+import java.util.List;
+
+public interface CourierService {
+    Courier addCourier(Courier courier);
+    void deleteCourier(Long courierId);
+    List<Courier> getAllCouriersByCourierType(CourierType courierType);
+}
+CourierServiceImpl:
+
+java
+Copy code
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class CourierServiceImpl implements CourierService {
+
+    @Autowired
+    private CourierRepository courierRepository;
+
+    @Override
+    public Courier addCourier(Courier courier) {
+        // Implement validation logic (for simplicity, you can use javax.validation annotations in the Courier entity)
+        // Save courier using courierRepository
+        return courierRepository.save(courier);
+    }
+
+    @Override
+    public void deleteCourier(Long courierId) {
+        // Implement logic to delete courier by ID
+        Optional<Courier> optionalCourier = courierRepository.findById(courierId);
+        if (optionalCourier.isPresent()) {
+            courierRepository.deleteById(courierId);
+        } else {
+            throw new RuntimeException("Courier not found with ID: " + courierId);
+        }
+    }
+
+    @Override
+    public List<Courier> getAllCouriersByCourierType(CourierType courierType) {
+        // Implement logic to retrieve couriers by type
+        return courierRepository.findByCourierType(courierType);
+    }
+}
+CourierController:
+
+java
+Copy code
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/couriers")
+public class CourierController {
+
+    @Autowired
+    private CourierService courierService;
+
+    @PostMapping
+    public ResponseEntity<Courier> addCourier(@RequestBody Courier courier) {
+        // Implement payload validation
+        Courier addedCourier = courierService.addCourier(courier);
+        return ResponseEntity.ok(addedCourier);
+    }
+
+    @DeleteMapping("/{courierId}")
+    public ResponseEntity<Void> deleteCourier(@PathVariable Long courierId) {
+        // Implement error handling
+        courierService.deleteCourier(courierId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/byType/{courierType}")
+    public ResponseEntity<List<Courier>> getCouriersByType(@PathVariable CourierType courierType) {
+        List<Courier> couriers = courierService.getAllCouriersByCourierType(courierType);
+        return ResponseEntity.ok(couriers);
+    }
+}
+
+
+Application Properties (application.properties):
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+Main Application Class:
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class CourierApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(CourierApplication.class, args);
+    }
+}
+
+
+
