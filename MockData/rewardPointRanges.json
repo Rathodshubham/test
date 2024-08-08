@@ -1,0 +1,26 @@
+[
+  {
+    "TransactionTypeId": 1,
+    "MinAmount": 0,
+    "MaxAmount": 1000,
+    "Points": 1
+  },
+  {
+    "TransactionTypeId": 1,
+    "MinAmount": 1000,
+    "MaxAmount": 5000,
+    "Points": 5
+  },
+  {
+    "TransactionTypeId": 2,
+    "MinAmount": 0,
+    "MaxAmount": 500,
+    "Points": 2
+  },
+  {
+    "TransactionTypeId": 2,
+    "MinAmount": 500,
+    "MaxAmount": 2000,
+    "Points": 8
+  }
+]

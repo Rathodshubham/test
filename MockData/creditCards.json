@@ -1,0 +1,26 @@
+[
+  {
+    "CardNumber": "1111-2222-3333-4444",
+    "ExpirationDate": "2025-12-31",
+    "CreditLimit": 10000,
+    "CustomerId": 1
+  },
+  {
+    "CardNumber": "5555-6666-7777-8888",
+    "ExpirationDate": "2024-11-30",
+    "CreditLimit": 15000,
+    "CustomerId": 1
+  },
+  {
+    "CardNumber": "9999-0000-1111-2222",
+    "ExpirationDate": "2026-01-31",
+    "CreditLimit": 20000,
+    "CustomerId": 2
+  },
+  {
+    "CardNumber": "3333-4444-5555-6666",
+    "ExpirationDate": "2023-10-31",
+    "CreditLimit": 5000,
+    "CustomerId": 2
+  }
+]
